@@ -57,17 +57,22 @@ function Playlist() {
 	};
 
 	this.get = function() {
-		console.log('get');
 		var playlist = JSON.parse(localStorage.getItem("svtplaylist"));
 		if(playlist) {
 			return playlist;
 		} else {
 			return [];
 		}
-//		return [
-//			{title: 'Anna Lind', url:"http://www.svtplay.se/video/1456129/anna-lindh-1957-2003?type=embed"},
-//			{title: 'Doobidoo', url:"http://www.svtplay.se/video/1453360/del-4-av-12?type=embed"},
-//		];
+	};
+
+	this.hasVideo = function(url) {
+		var playList = this.get();
+		for(var i=0; playList && i < playList.length; i++) {
+			if(playList[i].url === url) {
+				return true;
+			}
+		}
+		return false;
 	};
 }
 
@@ -75,45 +80,58 @@ function Overlay(playlist, page) {
 	this.overlay = undefined;
 	this.player = undefined;
 	this.playlist = playlist;
+	this.addButton = undefined;
 
 	this.show = function() {
 		var self = this;
-		if(!this.overlay) {
-			this.overlay = $('<div id="playlistOverlay"></div>' );
+		this.overlay = $('<div id="playlistOverlay"></div>' );
 
-			var menu = $(
-					'<div id="playlistMenu">' +
-					'<h2>Playlist</h2>' +
-					'<ol id="playlistVideos"></ol>' +
-					'</div>');
+		var closeButton = $('<button id="playlistCloseButton" class="playlistButton">stäng</button>');
+		closeButton.click(function() {
+			self.hide();
+		});
+		this.overlay.append(closeButton);
 
-			//TODO check if video page
-			var addButton = $('<button id="playlistAddButton"> Lägg till den här videon </button>');
-			addButton.click(function() {
+		var menu = $(
+				'<div id="playlistMenu">' +
+						'<h2>SVT Playlist</h2>' +
+						'<ol id="playlistVideos"></ol>' +
+						'</div>');
+
+		if($('#player').size() > 0 && !this.playlist.hasVideo(page.getVideoInfo().url)) {
+			this.addButton = $('<div id="playlistAddButton"><span class="playIcon playIcon-Plus"></span> Lägg till den här videon </div>');
+			this.addButton.click(function() {
 				var videoInfo = page.getVideoInfo();
 				if(playlist.add(videoInfo)) {
 					self.addVideoToList(videoInfo, self.overlay.find('#playlistVideos'));
+					self.addButton.hide();
 				}
 			});
-			menu.append(addButton);
-			this.overlay.append(menu);
-
-			this.loadVideoList(this.overlay.find('#playlistVideos'));
-
-			this.player = $('<div id="playlistPlayer"></div>');
-			this.player.hide();
-			this.overlay.append(this.player);
-
-			$(document.body).append(this.overlay);
-		} else {
-			this.overlay.show();
+			menu.append(this.addButton);
 		}
+		this.overlay.append(menu);
+
+		this.loadVideoList(this.overlay.find('#playlistVideos'));
+
+		this.player = $('<div id="playlistPlayer"></div>');
+		this.player.hide();
+		this.overlay.append(this.player);
+		this.overlay.css({left: '-500px'});
+		$(document.body).append(this.overlay);
+		this.overlay.animate({'left': 0}, 500);
+	};
+
+	this.hide = function() {
+		if(this.player) {
+			this.player.remove();
+		}
+		this.overlay.animate({'left': -500}, 300, function() {
+			$(this).remove();
+		});
 	};
 
 	this.loadPlayer = function(videoUrl) {
-		this.player.empty().load(videoUrl + ' .svtFullFrame', function() {
-			console.log('loaded');
-		});
+		this.player.empty().load(videoUrl + ' .svtFullFrame', function() {});
 		this.player.show();
 	};
 
@@ -127,12 +145,12 @@ function Overlay(playlist, page) {
 	this.addVideoToList = function(videoInfo, videoList) {
 		var self = this;
 		var video = $('<li data-url="' + videoInfo.url + '"></li>');
-		var playButton = $('<span class="playButton">' + videoInfo.title + '</span>');
+		var playButton = $('<span class="playlistPlayButton" title="' + videoInfo.title + '">' + videoInfo.title + '</span>');
 		playButton.click(function() {
 			self.loadPlayer($(this).parent().attr("data-url"));
 		});
 		video.append(playButton);
-		var removeButton = $('<button class="removeButton">x</button>');
+		var removeButton = $('<button class="playlistButton playlistRemoveButton">x</button>');
 		removeButton.click(function() {
 			var listItem = $(this).parent();
 			self.playlist.remove(listItem.attr("data-url"));
@@ -140,11 +158,7 @@ function Overlay(playlist, page) {
 		});
 		video.append(removeButton);
 		videoList.append(video);
-	}
-
-	this.hide = function() {
-		this.overlay.hide();
-	}
+	};
 }
 
 load_jquery();
