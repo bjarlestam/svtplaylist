@@ -1,14 +1,14 @@
-function load_jquery() {
+function load_script(url) {
 	var jq = document.createElement("script");
-	jq.src = "http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js";
+	jq.src = url;
 	document.getElementsByTagName("body")[0].appendChild(jq);
 }
 
-function load_css() {
+function load_css(url) {
 	var css = document.createElement("link");
 	css.rel = "stylesheet";
 	css.type = "text/css";
-	css.href = "http://localhost:9000/public/javascripts/bookmarklet.css";
+	css.href = url;
 	document.getElementsByTagName("head")[0].appendChild(css);
 }
 
@@ -131,7 +131,20 @@ function Overlay(playlist, page) {
 	};
 
 	this.loadPlayer = function(videoUrl) {
-		this.player.empty().load(videoUrl + ' .svtFullFrame', function() {});
+		this.player.empty().load(videoUrl + ' .svtFullFrame', function() {
+			$('.svtplayer').each(function(){
+				if(!$(this).hasClass('svtplayerInitialized')){
+					var videoPlayer = new svtplayer.SVTPlayer($(this));
+					subscribe('/player/onVideoEnd', function() {
+						var next = $('.playlistActiveVideo').parent().next();
+						if(next.size() > 0) {
+							next.find('.playlistPlayButton').click();
+						}
+						console.log(next);
+					});
+				}
+			});
+		});
 		this.player.show();
 	};
 
@@ -147,6 +160,8 @@ function Overlay(playlist, page) {
 		var video = $('<li data-url="' + videoInfo.url + '"></li>');
 		var playButton = $('<span class="playlistPlayButton" title="' + videoInfo.title + '">' + videoInfo.title + '</span>');
 		playButton.click(function() {
+			videoList.find('.playlistActiveVideo').removeClass('playlistActiveVideo');
+			playButton.addClass('playlistActiveVideo');
 			self.loadPlayer($(this).parent().attr("data-url"));
 		});
 		video.append(playButton);
@@ -161,8 +176,9 @@ function Overlay(playlist, page) {
 	};
 }
 
-load_jquery();
-load_css();
+load_script("http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js");
+load_script("http://www.svtplay.se/public/2099.99/javascripts/script-built.js");
+load_css("http://localhost:9000/public/javascripts/bookmarklet.css");
 var currentPage = new Page();
 var playlist = new Playlist();
 var overlay = new Overlay(playlist, currentPage);
