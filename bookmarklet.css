@@ -49,7 +49,8 @@
 .playlistPlayButton {
 	cursor: pointer;
 	color: #fff;
-	padding: 5px 14px;
+	background: #505359;
+	padding: 7px 14px;
 	margin-top: 5px;
 	width: 150px;
 	overflow: auto;
@@ -62,21 +63,6 @@
 	-o-border-radius: 5px 5px 5px 5px;
 	-ms-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
-
-	/*background: #737478;*/
-	/*background-image: -webkit-gradient(linear, left top, left bottom, from(#737478), to(#5d5f61));*/
-	/*background: -webkit-linear-gradient(top, #737478, #5d5f61);*/
-	/*background: -moz-linear-gradient(top, #737478, #5d5f61);*/
-	/*background: -ms-linear-gradient(top, #737478, #5d5f61);*/
-	/*background: -o-linear-gradient(top, #737478, #5d5f61);*/
-	/*background: linear-gradient(top, #737478, #5d5f61);*/
-
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#595a5f), to(#333538));
-	background: -webkit-linear-gradient(top, #595a5f, #333538);
-	background: -moz-linear-gradient(top, #595a5f, #333538);
-	background: -ms-linear-gradient(top, #595a5f, #333538);
-	background: -o-linear-gradient(top, #595a5f, #333538);
-	background: linear-gradient(top, #595a5f, #333538);
 }
 
 .playlistActiveVideo {

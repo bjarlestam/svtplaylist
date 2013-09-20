@@ -134,7 +134,7 @@ function Overlay(playlist, page) {
 		this.player.empty().load(videoUrl + ' .svtFullFrame', function() {
 			$('.svtplayer').each(function(){
 				if(!$(this).hasClass('svtplayerInitialized')){
-					var videoPlayer = new svtplayer.SVTPlayer($(this));
+					new svtplayer.SVTPlayer($(this));
 					subscribe('/player/onVideoEnd', function() {
 						var next = $('.playlistActiveVideo').parent().next();
 						if(next.size() > 0) {
