@@ -179,6 +179,11 @@ function Overlay(playlist, page) {
 load_script("http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js");
 load_script("http://www.svtplay.se/public/2099.99/javascripts/script-built.js");
 load_css("http://localhost:9000/public/javascripts/bookmarklet.css");
+
+//remove broken hover effect in video grid
+$('.playJsInfo-Hover').mouseenter(function() {return false;});
+$('.playJsInfo-Hover').mouseleave(function() {return false;});
+
 var currentPage = new Page();
 var playlist = new Playlist();
 var overlay = new Overlay(playlist, currentPage);
