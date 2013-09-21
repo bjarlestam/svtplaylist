@@ -56,6 +56,32 @@ function Playlist() {
 		}
 	};
 
+	this.moveUp = function(url) {
+		var playList = this.get();
+		for(var i=0; playList && i < playList.length; i++) {
+			if(playList[i].url === url && i > 0) {
+				var entry = playList[i];
+				playList.splice(i,1);
+				playList.splice(i-1,0, entry);
+				this.store(playList);
+				return;
+			}
+		}
+	};
+
+	this.moveDown = function(url) {
+		var playList = this.get();
+		for(var i=0; playList && i < playList.length; i++) {
+			if(playList[i].url === url && i < playList.length - 1) {
+				var entry = playList[i];
+				playList.splice(i,1);
+				playList.splice(i+1,0, entry);
+				this.store(playList);
+				return;
+			}
+		}
+	};
+
 	this.get = function() {
 		var playlist = JSON.parse(localStorage.getItem("svtplaylist"));
 		if(playlist) {
