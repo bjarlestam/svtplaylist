@@ -207,8 +207,11 @@ load_script("http://www.svtplay.se/public/2099.99/javascripts/script-built.js");
 load_css("http://localhost:9000/public/javascripts/bookmarklet.css");
 
 //remove broken hover effect in video grid
-$('.playJsInfo-Hover').mouseenter(function() {return false;});
-$('.playJsInfo-Hover').mouseleave(function() {return false;});
+$('.playJsTabs').on({
+	'mouseenter': function() { return false; },
+	'mouseleave': function() { return false; }
+}, '.playJsInfo-Hover');
+
 
 var currentPage = new Page();
 var playlist = new Playlist();
