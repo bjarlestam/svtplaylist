@@ -15,10 +15,6 @@
     max-width: 20em;
   }
 
-  p {
-    margin-top: 4em;
-  }
-
   .bookmarklet {
     margin-top: 4em;
     text-decoration: none;
@@ -36,16 +32,21 @@
     border-right: 1px solid #474748;
     box-shadow: 0 0 2px #474748;
   }
+  
+  #about {
+    position: absolute;
+    bottom: 3em;
+    font-size: 0.9em;
+  }
 
 </style>
 </head>
 
 <body>
   <div id="main">
-    <a class="bookmarklet" href="javascript:(function()%7B(function()%7Bvar%20e%3Ddocument.createElement(%22script%22)%3Be.async%3D1%3Be.src%3D%22http%3A%2F%2Fbjarlestam.github.io%2Fsvtplaylist%2Fsrc%2Fbookmarklet.js%22%3Bdocument.getElementsByTagName(%22body%22)%5B0%5D.appendChild(e)%7D)()%7D)()%3B">SVT Playlist</a>
-    <p>
-      Se till att du har bokmärksfältet synligt i din webbsare. Dra SVT Playlist knappen till bokmärksfältet. Gå till www.svtplay.se och leta upp ett program som du vill ha med i din spellista. Klicka på SVT Playlistbokmärket.
-    </p>
+    <a class="bookmarklet" href="javascript:(function()%7B(function()%7Bvar%20e%3Ddocument.createElement(%22script%22)%3Be.async%3D1%3Be.src%3D%22http%3A%2F%2Fbjarlestam.github.io%2Fsvtplaylist%2Fsrc%2Fbookmarklet.js%22%3Bdocument.getElementsByTagName(%22body%22)%5B0%5D.appendChild(e)%7D)()%7D)()%3B" title="Se till att du har bokmärksfältet synligt i din webbsare. Dra SVT Playlist knappen till bokmärksfältet. Gå till www.svtplay.se och leta upp ett program som du vill ha med i din spellista. Klicka på SVT Playlistbokmärket.">SVT Playlist</a>
+    <div id="about" >SVT Playlist är skapad av Andreas Bjärlestam</div>
+      
   </div>
 </body>
 
