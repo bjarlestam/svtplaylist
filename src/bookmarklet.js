@@ -204,7 +204,7 @@ function Overlay(playlist, page) {
 
 load_script("http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js");
 load_script("http://www.svtplay.se/public/2099.99/javascripts/script-built.js");
-load_css("http://localhost:9000/public/javascripts/bookmarklet.css");
+load_css("http://bjarlestam.github.io/svtplaylist/src/bookmarklet.css");
 
 //remove broken hover effect in video grid
 $('.playJsTabs').on({
