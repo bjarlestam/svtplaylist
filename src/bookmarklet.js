@@ -56,26 +56,13 @@ function Playlist() {
 		}
 	};
 
-	this.moveUp = function(url) {
-		var playList = this.get();
-		for(var i=0; playList && i < playList.length; i++) {
-			if(playList[i].url === url && i > 0) {
-				var entry = playList[i];
-				playList.splice(i,1);
-				playList.splice(i-1,0, entry);
-				this.store(playList);
-				return;
-			}
-		}
-	};
-
-	this.moveDown = function(url) {
+	this.move = function(url, toIndex) {
 		var playList = this.get();
 		for(var i=0; playList && i < playList.length; i++) {
 			if(playList[i].url === url && i < playList.length - 1) {
 				var entry = playList[i];
 				playList.splice(i,1);
-				playList.splice(i+1,0, entry);
+				playList.splice(toIndex,0, entry);
 				this.store(playList);
 				return;
 			}
@@ -204,7 +191,8 @@ function Overlay(playlist, page) {
 
 load_script("http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js");
 load_script("http://www.svtplay.se/public/2099.99/javascripts/script-built.js");
-load_css("http://bjarlestam.github.io/svtplaylist/src/bookmarklet.css");
+//load_css("http://bjarlestam.github.io/svtplaylist/src/bookmarklet.css");
+load_css("http://localhost:7000/src/bookmarklet.css");
 
 //remove broken hover effect in video grid
 $('.playJsTabs').on({
@@ -217,7 +205,18 @@ var currentPage = new Page();
 var playlist = new Playlist();
 var overlay = new Overlay(playlist, currentPage);
 
-if(!currentPage.isSvtplay()) {
-	currentPage.goToSvtplay();
-}
+//if(!currentPage.isSvtplay()) {
+//	currentPage.goToSvtplay();
+//}
 overlay.show();
+
+//TODO add an edit button and init this stuff when pressed
+load_script("http://code.jquery.com/ui/1.10.3/jquery-ui.js");
+setTimeout(function() {
+	$('#playlistVideos').sortable({
+		axis: 'y',
+		update: function(event, ui) {
+			playlist.move(ui.item.attr('data-url'), ui.item.index());
+		}
+	});
+}, 1000);
