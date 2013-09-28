@@ -105,11 +105,23 @@ function Overlay(playlist, page) {
 		});
 		this.overlay.append(closeButton);
 
-		var menu = $(
-				'<div id="playlistMenu">' +
-						'<h2>SVT Playlist</h2>' +
-						'<ol id="playlistVideos"></ol>' +
-						'</div>');
+		var menu = $('<div id="playlistMenu"><h2>SVT Playlist</h2></div>');
+		menu.append(panel);
+		var editButton = $('<button id="playlistEditButton" class="playlistButton">ändra</button>');
+		editButton.click(function() {
+			if(editButton.text() === 'ändra') {
+  			self.editMode(true);
+  			$('.playlistRemoveButton').show();
+  			editButton.text('klar');
+			} else {
+  			self.editMode(false);
+  			$('.playlistRemoveButton').hide();
+  			editButton.text('ändra');
+			}
+		});
+		menu.append(editButton);
+		var videoList = $('<ol id="playlistVideos"></ol>');
+		menu.append(videoList);
 
 		if($('#player').size() > 0 && !this.playlist.hasVideo(page.getVideoInfo().url)) {
 			this.addButton = $('<div id="playlistAddButton"><span class="playIcon playIcon-Plus"></span> Lägg till den här videon </div>');
@@ -142,6 +154,22 @@ function Overlay(playlist, page) {
 			$(this).remove();
 		});
 	};
+	
+	this.editMode = function(on) {
+	  var self = this;
+    if(on) {
+      $('#playlistVideos').sortable({
+      	axis: 'y',
+      	update: function(event, ui) {
+      		self.playlist.move(ui.item.attr('data-url'), ui.item.index());
+      	}
+      });
+      $('#playlistVideos .playlistPlayButton').addClass('playlistArrows');
+    } else {
+      $('#playlistVideos').sortable('destroy');
+      $('#playlistVideos .playlistPlayButton').removeClass('playlistArrows');
+    }
+	};
 
 	this.loadPlayer = function(videoUrl) {
 		this.player.empty().load(videoUrl + ' .svtFullFrame', function() {
@@ -153,7 +181,6 @@ function Overlay(playlist, page) {
 						if(next.size() > 0) {
 							next.find('.playlistPlayButton').click();
 						}
-						console.log(next);
 					});
 				}
 			});
@@ -170,7 +197,7 @@ function Overlay(playlist, page) {
 
 	this.addVideoToList = function(videoInfo, videoList) {
 		var self = this;
-		var video = $('<li data-url="' + videoInfo.url + '"></li>');
+		var video = $('<li class="playlistItem" data-url="' + videoInfo.url + '"></li>');
 		var playButton = $('<span class="playlistPlayButton" title="' + videoInfo.title + '">' + videoInfo.title + '</span>');
 		playButton.click(function() {
 			videoList.find('.playlistActiveVideo').removeClass('playlistActiveVideo');
@@ -193,6 +220,7 @@ load_script("http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js");
 load_script("http://www.svtplay.se/public/2099.99/javascripts/script-built.js");
 //load_css("http://bjarlestam.github.io/svtplaylist/src/bookmarklet.css");
 load_css("http://localhost:7000/src/bookmarklet.css");
+load_script("http://code.jquery.com/ui/1.10.3/jquery-ui.js");
 
 //remove broken hover effect in video grid
 $('.playJsTabs').on({
@@ -209,14 +237,3 @@ var overlay = new Overlay(playlist, currentPage);
 //	currentPage.goToSvtplay();
 //}
 overlay.show();
-
-//TODO add an edit button and init this stuff when pressed
-load_script("http://code.jquery.com/ui/1.10.3/jquery-ui.js");
-setTimeout(function() {
-	$('#playlistVideos').sortable({
-		axis: 'y',
-		update: function(event, ui) {
-			playlist.move(ui.item.attr('data-url'), ui.item.index());
-		}
-	});
-}, 1000);
