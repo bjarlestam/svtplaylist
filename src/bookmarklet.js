@@ -106,7 +106,6 @@ function Overlay(playlist, page) {
 		this.overlay.append(closeButton);
 
 		var menu = $('<div id="playlistMenu"><h2>SVT Playlist</h2></div>');
-		menu.append(panel);
 		var editButton = $('<button id="playlistEditButton" class="playlistButton">ändra</button>');
 		editButton.click(function() {
 			if(editButton.text() === 'ändra') {
@@ -172,20 +171,24 @@ function Overlay(playlist, page) {
 	};
 
 	this.loadPlayer = function(videoUrl) {
+	  var self = this;
+	  unsubscribe('/player/onVideoEnd', self.playNext);
 		this.player.empty().load(videoUrl + ' .svtFullFrame', function() {
 			$('.svtplayer').each(function(){
 				if(!$(this).hasClass('svtplayerInitialized')){
 					new svtplayer.SVTPlayer($(this));
-					subscribe('/player/onVideoEnd', function() {
-						var next = $('.playlistActiveVideo').parent().next();
-						if(next.size() > 0) {
-							next.find('.playlistPlayButton').click();
-						}
-					});
+					subscribe('/player/onVideoEnd', self.playNext);
 				}
 			});
 		});
 		this.player.show();
+	};
+	
+	this.playNext = function() {
+		var next = $('.playlistActiveVideo').parent().next();
+		if(next.size() > 0) {
+			next.find('.playlistPlayButton').click();
+		}
 	};
 
 	this.loadVideoList = function(videoList) {
