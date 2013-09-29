@@ -90,14 +90,13 @@ function Playlist() {
 }
 
 function Overlay(playlist, page) {
-	this.overlay = undefined;
+	this.overlay = $('<div id="playlistOverlay"></div>' );
 	this.player = undefined;
 	this.playlist = playlist;
 	this.addButton = undefined;
 
 	this.show = function() {
 		var self = this;
-		this.overlay = $('<div id="playlistOverlay"></div>' );
 
 		var closeButton = $('<button id="playlistCloseButton" class="playlistButton">stäng</button>');
 		closeButton.click(function() {
@@ -152,6 +151,13 @@ function Overlay(playlist, page) {
 		this.overlay.animate({'left': -500}, 300, function() {
 			$(this).remove();
 		});
+	};
+	
+	this.showMessage = function(message) {
+	  this.overlay.append('<p class="playlistMessage">' + message + '</p>')
+	  this.overlay.css({left: '-500px'});
+		$(document.body).append(this.overlay);
+		this.overlay.animate({'left': 0}, 500);
 	};
 	
 	this.editMode = function(on) {
@@ -221,8 +227,8 @@ function Overlay(playlist, page) {
 
 load_script("http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js");
 load_script("http://www.svtplay.se/public/2099.99/javascripts/script-built.js");
-//load_css("http://bjarlestam.github.io/svtplaylist/src/bookmarklet.css");
-load_css("http://localhost:7000/src/bookmarklet.css");
+load_css("http://bjarlestam.github.io/svtplaylist/src/bookmarklet.css");
+//load_css("http://localhost:7000/src/bookmarklet.css");
 load_script("http://code.jquery.com/ui/1.10.3/jquery-ui.js");
 
 //remove broken hover effect in video grid
@@ -236,7 +242,8 @@ var currentPage = new Page();
 var playlist = new Playlist();
 var overlay = new Overlay(playlist, currentPage);
 
-//if(!currentPage.isSvtplay()) {
-//	currentPage.goToSvtplay();
-//}
-overlay.show();
+if(!currentPage.isSvtplay()) {
+	overlay.showMessage('Gå till <a href="http://www.svtplay.se">SVT Play</a>, leta upp ett program som du vill ha med i din spellista och klicka på bokmärket igen.')
+} else {
+  overlay.show();
+}

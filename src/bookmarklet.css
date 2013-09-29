@@ -132,3 +132,10 @@
 	border: 5px solid transparent;
 	border-top-color: #FFF;
 }
+
+.playlistMessage {
+  width: 200px;
+  margin: 30px;
+  margin-bottom: 50px;
+  font-size: 16px;
+}
