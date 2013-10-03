@@ -13,6 +13,11 @@ function load_css(url) {
 }
 
 function Page() {
+  
+  this.isLocalhost = function() {
+    return window.location.hostname === 'localhost';
+  }
+  
 	this.isSvtplay = function() {
 		return window.location.hostname === "www.svtplay.se";
 	};
@@ -117,25 +122,26 @@ function Overlay(playlist, page) {
   			editButton.text('ändra');
 			}
 		});
-		menu.append(editButton);
 		var videoList = $('<ol id="playlistVideos"></ol>');
+		this.loadVideoList(videoList);
+		if(videoList.find('li').size() > 0) {
+  		menu.append(editButton);
+		}
 		menu.append(videoList);
+		
 
 		if($('#player').size() > 0 && !this.playlist.hasVideo(page.getVideoInfo().url)) {
 			this.addButton = $('<div id="playlistAddButton"><span class="playIcon playIcon-Plus"></span> Lägg till den här videon </div>');
 			this.addButton.click(function() {
 				var videoInfo = page.getVideoInfo();
 				if(playlist.add(videoInfo)) {
-					self.addVideoToList(videoInfo, self.overlay.find('#playlistVideos'));
+					self.addVideoToList(videoInfo, videoList);
 					self.addButton.hide();
 				}
 			});
 			menu.append(this.addButton);
 		}
 		this.overlay.append(menu);
-
-		this.loadVideoList(this.overlay.find('#playlistVideos'));
-
 		this.player = $('<div id="playlistPlayer"></div>');
 		this.player.hide();
 		this.overlay.append(this.player);
@@ -227,11 +233,9 @@ function Overlay(playlist, page) {
 
 load_script("http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js");
 load_script("http://www.svtplay.se/public/2099.99/javascripts/script-built.js");
-load_css("http://bjarlestam.github.io/svtplaylist/src/bookmarklet.css");
-//load_css("http://localhost:7000/src/bookmarklet.css");
 load_script("http://code.jquery.com/ui/1.10.3/jquery-ui.js");
 
-//remove broken hover effect in video grid
+//removes broken hover effect in video grid
 $('.playJsTabs').on({
 	'mouseenter': function() { return false; },
 	'mouseleave': function() { return false; }
@@ -242,7 +246,13 @@ var currentPage = new Page();
 var playlist = new Playlist();
 var overlay = new Overlay(playlist, currentPage);
 
-if(!currentPage.isSvtplay()) {
+if(currentPage.isLocalhost()) {
+  load_css("http://localhost:7000/src/bookmarklet.css");
+} else {
+  load_css("http://bjarlestam.github.io/svtplaylist/src/bookmarklet.css");
+}
+
+if(!currentPage.isSvtplay() && !currentPage.isLocalhost()) {
 	overlay.showMessage('Gå till <a href="http://www.svtplay.se">SVT Play</a>, leta upp ett program som du vill ha med i din spellista och klicka på bokmärket igen.')
 } else {
   overlay.show();
