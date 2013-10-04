@@ -58,6 +58,7 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	display: inline-block;
+	overflow: hidden;
 
 	-webkit-border-radius: 5px 5px 5px 5px;
 	-moz-border-radius: 5px 5px 5px 5px;
