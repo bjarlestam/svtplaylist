@@ -212,7 +212,7 @@ function Overlay(playlist, page) {
 
 	this.addVideoToList = function(videoInfo, videoList) {
 		var self = this;
-		var video = $('<li class="playlistItem" data-url="' + videoInfo.url + '"></li>');
+		var video = $('<li class="playlistItem svtXClearFix" data-url="' + videoInfo.url + '"></li>');
 		var playButton = $('<span class="playlistPlayButton" title="' + videoInfo.title + '">' + videoInfo.title + '</span>');
 		playButton.click(function() {
 			videoList.find('.playlistActiveVideo').removeClass('playlistActiveVideo');
@@ -233,7 +233,8 @@ function Overlay(playlist, page) {
 
 load_script("http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js");
 load_script("http://www.svtplay.se/public/2099.99/javascripts/script-built.js");
-load_script("http://code.jquery.com/ui/1.10.3/jquery-ui.js");
+//load_script("http://code.jquery.com/ui/1.10.3/jquery-ui.js");
+load_script("http://code.jquery.com/ui/1.9.2/jquery-ui.js");
 
 //removes broken hover effect in video grid
 $('.playJsTabs').on({
