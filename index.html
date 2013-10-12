@@ -14,6 +14,16 @@
     color: #333333;
     max-width: 20em;
   }
+  
+  a {
+    color: #369E9E;
+  }
+  a:visited {
+    color: #369E9E;
+  }
+  a:hover {
+    color: #4BBFBF;
+  }
 
   #bookmarklet {
     margin-top: 1em;
@@ -66,8 +76,9 @@
     position: absolute;
     top: 1em;
     right: 4em;
+    text-align: left;
     display:none;
-    width: 10em;
+    width: 12em;
     padding: 1em;
     background-color: rgba(255, 255, 255, 0.8);
     border: 2px solid #474748;
@@ -77,7 +88,16 @@
     -ms-border-radius: 5px 5px 5px 5px;
     border-radius: 5px 5px 5px 5px;    
   }
-    
+  
+  #instructions ol {
+    padding-left: 1.5em;
+    margin: 0;
+  }
+
+  #instructions li {
+    margin-bottom: 0.5em;
+  }
+  
 
 </style>
 </head>
@@ -88,7 +108,14 @@
     <a id="bookmarklet" href="javascript:(function()%7B(function()%7Bvar%20e%3Ddocument.createElement(%22script%22)%3Be.async%3D1%3Be.src%3D%22http%3A%2F%2Fbjarlestam.github.io%2Fsvtplaylist%2Fsrc%2Fbookmarklet.js%22%3Bdocument.getElementsByTagName(%22body%22)%5B0%5D.appendChild(e)%7D)()%7D)()%3B" title="Dra den här knappen till bokmärksfältet. Gå till www.svtplay.se och leta upp ett program som du vill ha med i din spellista. Klicka på bokmärket.">SVT Playlist</a>
     
     <span id="help">?</span>
-    <span id="instructions">Se till att du har bokmärksfältet synligt i din webbsare. Dra SVT Playlistknappen till bokmärksfältet. Gå till <a href="http://www.svtplay.se">www.svtplay.se</a> och leta upp ett program som du vill ha med i din spellista. Klicka på SVT Playlistbokmärket.</span>
+    <div id="instructions">
+      <ol>
+        <li>Se till att du har bokmärksfältet synligt i din webbsare. </li>
+        <li>Dra SVT Playlistknappen till bokmärksfältet. 
+        <li>Gå till <a href="http://www.svtplay.se">www.svtplay.se</a> och leta upp ett program som du vill ha med i din spellista.</li> 
+        <li>Klicka på SVT Playlistbokmärket.</li>
+      </ol>
+    </div>
     <div id="about" >SVT Playlist är skapad av <a href="http://bjarlestam.github.io/">Andreas Bjärlestam</a></div>
   </div>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>  
