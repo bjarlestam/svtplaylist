@@ -92,6 +92,25 @@ function Playlist() {
 		}
 		return false;
 	};
+	
+	this.removeExpiredVideos = function() {
+		var playList = this.get();
+		for(var i=0; playList && i < playList.length; i++) {
+		  this.removeIfExpired(playList[i].url);
+		}
+	};
+	
+	this.removeIfExpired = function(url) {
+	  var self = this;
+	  $.ajax({
+	    url: url,
+      statusCode: {
+          404: function() {
+            self.remove(url);
+          }
+        }
+    });		
+	};
 }
 
 function Overlay(playlist, page) {
@@ -103,7 +122,7 @@ function Overlay(playlist, page) {
 
 	this.show = function() {
 		var self = this;
-
+		
 		var closeButton = $('<button id="playlistCloseButton" class="playlistButton">stäng</button>');
 		closeButton.click(function() {
 			self.hide();
@@ -249,6 +268,7 @@ $('.playJsTabs').on({
 
 var currentPage = new Page();
 var playlist = new Playlist();
+playlist.removeExpiredVideos();
 var overlay = new Overlay(playlist, currentPage);
 
 if(currentPage.isLocalhost()) {
