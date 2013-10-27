@@ -29,14 +29,7 @@
 
 #playlistAddButton {
 	margin-top: 30px;
-	cursor: pointer;
-	padding: 10px;
-	background: #505359;
-	-webkit-border-radius: 5px 5px 5px 5px;
-	-moz-border-radius: 5px 5px 5px 5px;
-	-o-border-radius: 5px 5px 5px 5px;
-	-ms-border-radius: 5px 5px 5px 5px;
-	border-radius: 5px 5px 5px 5px;
+	padding: 7px 14px;
 } 
 
 #playlistVideos {
@@ -52,7 +45,7 @@
 	color: #fff;
 	background: #505359;
 	padding: 7px 14px;
-	width: 160px;
+	width: 175px;
 	overflow: auto;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -60,12 +53,22 @@
 	overflow: hidden;
 	float: left;
 	margin-top: 5px;
+	border: none;
 	
 	-webkit-border-radius: 5px 5px 5px 5px;
 	-moz-border-radius: 5px 5px 5px 5px;
 	-o-border-radius: 5px 5px 5px 5px;
 	-ms-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
+}
+
+.playlistPlayButton::-moz-focus-inner {
+	padding: 0px 14px;
+}
+
+.playlistButton:focus, .playlistPlayButton:focus, #playlistCloseButton:focus {
+  outline: #afffff solid 2px;
+  outline-offset: -1px;
 }
 
 .playlistActiveVideo {
@@ -145,4 +148,8 @@
   margin: 30px;
   margin-bottom: 50px;
   font-size: 16px;
+}
+
+.playlistEmptyMessage {
+  margin-top: 20px;
 }

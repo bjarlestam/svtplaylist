@@ -146,18 +146,21 @@ function Overlay(playlist, page) {
 		this.loadVideoList(videoList);
 		if(videoList.find('li').size() > 0) {
   		menu.append(editButton);
+		} else {
+		  menu.append('<p class="playlistEmptyMessage">Din spellista är tom.<p>')
 		}
 		menu.append(videoList);
 		
 
 		if($('#player').size() > 0 && !this.playlist.hasVideo(page.getVideoInfo().url)) {
-			this.addButton = $('<div id="playlistAddButton"><span class="playIcon playIcon-Plus"></span> Lägg till den här videon </div>');
+			this.addButton = $('<button id="playlistAddButton" class="playlistButton"><span class="playIcon playIcon-Plus"></span> Lägg till den här videon </button>');
 			this.addButton.click(function() {
 				var videoInfo = page.getVideoInfo();
 				if(playlist.add(videoInfo)) {
 					self.addVideoToList(videoInfo, videoList);
 					self.addButton.hide();
 				}
+				$('.playlistEmptyMessage').remove();
 			});
 			menu.append(this.addButton);
 		}
@@ -166,7 +169,7 @@ function Overlay(playlist, page) {
 		this.player.hide();
 		this.overlay.append(this.player);
 		this.overlay.css({left: '-500px'});
-		$(document.body).append(this.overlay);
+		$(document.body).prepend(this.overlay);
 		this.overlay.animate({'left': 0}, 500);
 	};
 
@@ -234,7 +237,7 @@ function Overlay(playlist, page) {
 	this.addVideoToList = function(videoInfo, videoList) {
 		var self = this;
 		var video = $('<li class="playlistItem svtXClearFix" data-url="' + videoInfo.url + '"></li>');
-		var playButton = $('<span class="playlistPlayButton" title="' + videoInfo.title + '">' + videoInfo.title + '</span>');
+		var playButton = $('<button class="playlistPlayButton" title="' + videoInfo.title + '">' + videoInfo.title + '</button>');
 		playButton.click(function() {
 		  if(!self.isEditing) {
   			videoList.find('.playlistActiveVideo').removeClass('playlistActiveVideo');
@@ -272,7 +275,7 @@ playlist.removeExpiredVideos();
 var overlay = new Overlay(playlist, currentPage);
 
 if(currentPage.isLocalhost()) {
-  load_css("http://localhost:7000/src/bookmarklet.css");
+  load_css("http://localhost:7007/src/bookmarklet.css");
 } else {
   load_css("http://bjarlestam.github.io/svtplaylist/src/bookmarklet.css");
 }
