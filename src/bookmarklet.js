@@ -16,7 +16,7 @@ function Page() {
   
   this.isLocalhost = function() {
     return window.location.hostname === 'localhost';
-  }
+  };
   
 	this.isSvtplay = function() {
 		return window.location.hostname === "www.svtplay.se";
@@ -147,7 +147,7 @@ function Overlay(playlist, page) {
 		if(videoList.find('li').size() > 0) {
   		menu.append(editButton);
 		} else {
-		  menu.append('<p class="playlistEmptyMessage">Din spellista är tom.<p>')
+		  menu.append('<p class="playlistEmptyMessage">Din spellista är tom.<p>');
 		}
 		menu.append(videoList);
 		
@@ -183,7 +183,7 @@ function Overlay(playlist, page) {
 	};
 	
 	this.showMessage = function(message) {
-	  this.overlay.append('<p class="playlistMessage">' + message + '</p>')
+	  this.overlay.append('<p class="playlistMessage">' + message + '</p>');
 	  this.overlay.css({left: '-500px'});
 		$(document.body).append(this.overlay);
 		this.overlay.animate({'left': 0}, 500);
@@ -196,7 +196,6 @@ function Overlay(playlist, page) {
       $('#playlistVideos').sortable({
       	axis: 'y',
       	update: function(event, ui) {
-      	  console.log('move');
       		self.playlist.move(ui.item.attr('data-url'), ui.item.index());
       	}
       });
@@ -292,7 +291,7 @@ if(currentPage.isLocalhost()) {
 }
 
 if(!currentPage.isSvtplay() && !currentPage.isLocalhost()) {
-	overlay.showMessage('Gå till <a href="http://www.svtplay.se">SVT Play</a>, leta upp ett program som du vill ha med i din spellista och klicka på bokmärket igen.')
+	overlay.showMessage('Gå till <a href="http://www.svtplay.se">SVT Play</a>, leta upp ett program som du vill ha med i din spellista och klicka på bokmärket igen.');
 } else {
   overlay.show();
 }
