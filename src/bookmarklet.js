@@ -196,6 +196,7 @@ function Overlay(playlist, page) {
       $('#playlistVideos').sortable({
       	axis: 'y',
       	update: function(event, ui) {
+      	  console.log('move');
       		self.playlist.move(ui.item.attr('data-url'), ui.item.index());
       	}
       });
@@ -237,13 +238,15 @@ function Overlay(playlist, page) {
 	this.addVideoToList = function(videoInfo, videoList) {
 		var self = this;
 		var video = $('<li class="playlistItem svtXClearFix" data-url="' + videoInfo.url + '"></li>');
-		var playButton = $('<button class="playlistPlayButton" title="' + videoInfo.title + '">' + videoInfo.title + '</button>');
+		var playButton = $('<div class="playlistPlayButton" title="' + videoInfo.title + '" tabindex="0">' + videoInfo.title + '</div>');
 		playButton.click(function() {
-		  if(!self.isEditing) {
-  			videoList.find('.playlistActiveVideo').removeClass('playlistActiveVideo');
-  			playButton.addClass('playlistActiveVideo');
-  			self.loadPlayer($(this).parent().attr("data-url"));
-		  }
+		  self.playVideo(playButton, videoList);
+		});
+		playButton.keypress(function(e) {
+		  var code = e.keyCode || e.which;
+      if(code == 13) {
+  		  self.playVideo(playButton, videoList);
+      }
 		});
 		video.append(playButton);
 		var removeButton = $('<button class="playlistButton playlistRemoveButton">x</button>');
@@ -254,6 +257,14 @@ function Overlay(playlist, page) {
 		});
 		video.append(removeButton);
 		videoList.append(video);
+	};
+	
+	this.playVideo = function(playButton, videoList) {
+	  if(!this.isEditing) {
+			videoList.find('.playlistActiveVideo').removeClass('playlistActiveVideo');
+			playButton.addClass('playlistActiveVideo');
+			this.loadPlayer(playButton.parent().attr("data-url"));
+	  }
 	};
 	
 }
